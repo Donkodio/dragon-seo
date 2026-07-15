@@ -153,6 +153,76 @@ bullet points
 ### Писать
 Факты, цифры, имена, конкретные примеры, коротко, прямо
 
+---
+
+## 5. ТЕХ. SEO — Dynamic Rendering для SPA
+
+### Проблема
+Сайты на React/Vue/Svelte — SPA. Краулеры получают пустой HTML-каркас с одним `<title>`. Статьи не индексируются.
+
+### Решение: Dynamic Rendering
+Краулер (бот) получает статический SEO-HTML, человек — SPA. Проверка через User-Agent на nginx.
+
+### Компоненты
+
+#### A. Генератор SEO-статики (`prerender-seo.mjs`)
+Читает структурированные данные статей (TS/JS) → генерирует HTML файлы с:
+- Уникальный `<title>` и `<meta name="description">`
+- Open Graph / Twitter карточки
+- JSON-LD: Article + FAQPage + BreadcrumbList
+- Полный текст статьи в HTML
+- Тёмная тема, читаемый дизайн
+
+```bash
+# Использование:
+node prerender-seo.mjs path/to/articles.ts seo-out/
+rsync -az seo-out/ user@server:/var/www/site/seo/magazine/
+```
+
+#### B. nginx конфиг — map ботов
+`/etc/nginx/conf.d/seo-bots.conf`:
+```nginx
+map $http_user_agent $is_bot {
+    default 0;
+    "~*(googlebot|google-inspectiontool|bingbot|bingpreview|yandex|duckduckbot|baiduspider|slurp|applebot|facebookexternalhit|twitterbot|linkedinbot|telegrambot|whatsapp|pinterestbot|ahrefsbot|semrushbot)" 1;
+}
+```
+
+#### C. nginx конфиг — location rule
+Перед SPA-роутингом (`try_files $uri /index.html`):
+```nginx
+location ~ ^/magazine/(?<slug>[a-z0-9-]+)/?$ {
+    add_header Cache-Control "no-store, no-cache, must-revalidate, max-age=0" always;
+    if ($is_bot) {
+        rewrite ^ /seo/magazine/$slug.html last;
+    }
+    try_files $uri /index.html;
+}
+```
+
+#### D. Проверка
+```bash
+# 🤖 Как бот
+curl -A "Googlebot/2.1" https://site.com/magazine/article
+# Должен вернуть: <title>Статья — Бренд</title>, JSON-LD блоки, текст
+
+# 👤 Как человек
+curl -A "Mozilla/5.0 Safari/605" https://site.com/magazine/article
+# Должен вернуть: SPA-каркас (маленький размер)
+```
+
+### Структура файлов на сервере
+```
+/var/www/site/
+├── index.html          # SPA (для людей)
+├── assets/             # JS/CSS бандлы
+└── seo/
+    └── magazine/
+        ├── article-1.html  # SEO-статика (для ботов)
+        ├── article-2.html
+        └── ...
+```
+
 ## Референсы
 - `references/eeat-framework.md` — детальный E-E-A-T чеклист
 - `references/platform-format-guide.md` — форматы для 9 платформ (2025-2026)
