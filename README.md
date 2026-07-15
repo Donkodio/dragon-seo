@@ -77,23 +77,40 @@ dragon-seo/
     └── eeat-framework.md # E-E-A-T deep reference
 ```
 
-## 🔧 Installation
+## 🔧 Installation (Universal)
 
-### For Hermes Agent
+Dragon SEO works with **any AI agent** that supports the SKILL.md format:
+
+### 🟢 Hermes Agent
 ```bash
-# Copy to skills directory
+# Copy to Hermes skills
 cp -r dragon-seo ~/.hermes/skills/content-automation/
 ```
 
-### For Claude Code
+### 🔵 Claude Code
 ```bash
-# Add as a skill
+# Via skills.sh
 npx skills add Donkodio/dragon-seo
-# Or copy to skills directory
+
+# Or manual copy
 cp SKILL.md ~/.claude/skills/dragon-seo/
 ```
 
-### For any AI agent
+### 🟣 OpenClaw
+```bash
+# Copy to OpenClaw skills
+cp SKILL.md ~/.openclaw/skills/dragon-seo/SKILL.md
+cp -r references/ ~/.openclaw/skills/dragon-seo/
+```
+
+### 🟠 Codex CLI
+```bash
+# Copy to Codex skills
+cp SKILL.md ~/.codex/skills/dragon-seo/SKILL.md
+cp -r references/ ~/.codex/skills/dragon-seo/
+```
+
+### ⚪ Cursor / Windsurf / Gemini CLI
 Copy `SKILL.md` and `references/` to your agent's skills directory.
 
 ## 📄 License
