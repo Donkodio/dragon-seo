@@ -1,8 +1,8 @@
 ---
 name: dragon-seo
-description: "Премиальная SEO-методология: копирайтинг (151K), контент-стратегия (106K), GEO/AI-оптимизация с Signal Stack (90K), E-E-A-T, тех. SEO, JSON-LD схемы, анти-слоп, Research Scanner — сканирование всех источников. Query Fan-Out, Brand Mentions > Backlinks, Multi-Modal, Agentic Experiences, мониторинг AI-видимости (Otterly/Peec/ZipTie), Citations vs Recommendations (Visibility Ladder), слепая зона атрибуции AI-трафика."
+description: "Премиальная SEO-методология: копирайтинг (151K), контент-стратегия (106K), GEO/AI-оптимизация с Signal Stack (90K), Citability Scoring Rubric 0-100, E-E-A-T, тех. SEO, JSON-LD схемы, анти-слоп, Research Scanner — сканирование всех источников. Query Fan-Out, Brand Mentions > Backlinks, Multi-Modal, Agentic Experiences, мониторинг AI-видимости (Otterly/Peec/ZipTie), Citations vs Recommendations (Visibility Ladder), слепая зона атрибуции AI-трафика."
 metadata:
-  version: 2.3.0
+  version: 2.4.0
 ---
 
 # 🐉 Dragon SEO — Методология контента и SEO
@@ -213,6 +213,28 @@ PAWC = Σ |sentence| · e^(-pos/total) / total_words
 
 Экспоненциальное затухание: **первое предложение ответа AI = ~5× ценнее 20-го**. Ваши первые 2-3 предложения должны быть максимально насыщены фактами и доказательствами.
 
+### Citability Scoring Rubric (0-100) — измеримый скоринг цитируемости (geo-seo-claude)
+
+AI-системы извлекают пассажи, отвечающие структурным критериям: **134-167 слов**, самодостаточные (понятные без контекста), факт-насыщенные, с прямым ответом в первых 1-2 предложениях. GEO-оптимизация даёт **+30-115% видимости** в AI-ответах (Princeton, Georgia Tech, IIT Delhi, 2024).
+
+**5 категорий с весами (Block Citability Score):**
+
+```
+Score = Answer*0.30 + SelfContain*0.25 + Structure*0.20 + Stats*0.15 + Unique*0.10
+```
+
+| Категория | Вес | Критерий 90-100 |
+|-----------|-----|-----------------|
+| **1. Answer Block Quality** | 30% | Каждая секция открывается прямым ответом в 1-2 предложения («X — это…»), первые 40-60 слов самодостаточны |
+| **2. Passage Self-Containment** | 25% | 80%+ блоков самодостаточны: называют субъект явно (не «это»/«они»), 50-200 слов, не начинаются с «Но»/«Однако» |
+| **3. Structural Readability** | 20% | Чистая иерархия H1>H2>H3, вопросные заголовки, абзацы 2-4 предложения, таблицы для сравнений, списки |
+| **4. Statistical Density** | 15% | 5+ конкретных статистик на 500 слов, с источниками и датами, точные числа (не «многие») |
+| **5. Uniqueness & Original Data** | 10% | First-party данные, опросы, уникальный анализ («наш анализ X показал…») |
+
+**Процедура:** сегментируй контент по H2/H3 → оцени каждый блок по 5 суб-скорам → среднее = page score. Метрика «citability coverage» = % блоков выше 70. Блоки ниже 60 — на переписывание: замени первое предложение на answer-first паттерн, добавь цифры, улучши структуру.
+
+**Что НЕ считается статистикой:** «многие компании используют», «значительный процент», «исследования показывают» (без названного источника), «эксперты согласны» (без имён).
+
 ### GEO Signal Stack (4 Pillars)
 
 #### Pillar 1 — Evidence Density (35%)
@@ -247,12 +269,16 @@ PAWC = Σ |sentence| · e^(-pos/total) / total_words
 #### Pillar 4 — AI Crawlability (15%)
 | Сигнал | Цель |
 |--------|------|
-| robots.txt разрешает AI-ботов | GPTBot, ClaudeBot, PerplexityBot, Google-Extended |
+| robots.txt разрешает AI-ботов | GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, PerplexityBot, Google-Extended |
 | Server-side рендеринг | Критический контент не через JS |
 | HTTPS + HSTS | Обязательно |
 | Canonical URLs | Обязательно |
 | <time> + dateModified | Сигнал свежести |
 | llms.txt на корне сайта | Опционально (игнорируется Google, помогает другим AI) |
+
+**Критично (Originality.ai 2025):** >35% из топ-1000 сайтов блокируют хотя бы одного AI-краулера, 5-10% — всех сразу. Блокировка AI-краулеров — самый быстрый путь стать невидимым в AI-выдаче.
+
+**Разделяй OpenAI-ботов:** GPTBot (обучение + поиск), OAI-SearchBot (только живой поиск ChatGPT, без обучения — блокировать бессмысленно), ChatGPT-User (визиты по прямой просьбе пользователя — блокировка убивает user-initiated трафик).
 
 ### Critical Insight: Brand Mentions > Backlinks
 
@@ -300,6 +326,12 @@ PAWC = Σ |sentence| · e^(-pos/total) / total_words
 | **Gemini** | Для мнений — Reddit/Quora. Для фактов — Google Knowledge Graph |
 | **Claude** | Академические и первичные источники. Любит длинные обзоры с цитатами |
 | **Google AI Overviews** | Зеркалирует топ-10 + featured snippets. SEO-сигналы всё ещё важны |
+
+**Как AIO отбирает источники (geo-seo-claude):**
+- **92% цитат AIO** — со страниц уже в топ-10 органики: традиционное SEO остаётся входным билетом
+- **47% цитат** — со страниц ниже позиции 5: у AIO собственная логика отбора, она любит ясность и прямые ответы сильнее, чем сырой ранг
+- **~70% overlap** между оптимизацией под featured snippets и под AIO — сниппеты всё ещё работают
+- AIO избегает хеджирования и слов-паразитов: «вероятно», «может быть» снижают вероятность цитирования
 
 ### Оптимизация
 1. Краткий ответ в первых 2-3 предложениях
@@ -617,6 +649,7 @@ curl -A "Mozilla/5.0 Safari/605" https://site.com/magazine/article
 - coreyhaines31/marketingskills v2.10.0 — ai-seo v2.2.0 (Query Fan-Out, Agentic Experiences, Machine-Readable Files, Monitoring AI Visibility, Citations vs Recommendations), attribution v1.1.0 (слепая зона AI-трафика)
 - AgriciDaniel/claude-seo v2.2.4 (Brand Mentions > Backlinks, Multi-Modal, AI Mode vs AI Overviews, RSL 1.0)
 - nowork-studio/NotFair — GEO Signal Stack (Princeton KDD 2024, CMU AutoGEO ICLR 2026), Evidence Hunt
+- zubair-trabzada/geo-seo-claude (4.8K⭐ GEO-first SEO) — Citability Scoring Rubric 0-100, AIO source selection stats, AI-crawler access map
 - resciencelab/opc-skills@seo-geo (36K) — Princeton GEO methods
 - addyosmani/web-quality-skills@seo (35.2K) — web quality audit
 - firecrawl/firecrawl-workflows@firecrawl-seo-audit (29.7K) — SEO аудит через Firecrawl
