@@ -40,6 +40,8 @@ Dragon SEO combines the best methodologies from the top 5 SEO skill repositories
 - Specificity over vagueness
 - Customer language over company language
 - Telegram-optimized post structure
+- A/B/C situation diagnosis before drafting (blank brief / real voice / point edit)
+- Decompose-and-lock protocol, three-question gate, rationed punch, leave-it-alone test
 
 ### 2. Content Strategy
 - Topic cluster methodology
@@ -65,6 +67,14 @@ Dragon SEO combines the best methodologies from the top 5 SEO skill repositories
 - Eliminate filler phrases ("in modern world", "it's worth noting")
 - Fact-first, direct language
 - Short sentences, active voice
+- Structural tells (contrast reveals, negation lists, tailing appendages) + self-check
+- Second-generation tells (wisdom-shaped sentences, performed cleverness, perfect balance, tidy closers) and "build a writer"
+
+### 7. Directories & Measurement (from 82K-install skill)
+- Readiness gate, 13 tiers, MCP-registry-first ordering
+- Real backlink verification by `rel` tokens (not headers)
+- Product Hunt launch mechanics, G2/Capterra 10-in-30 reviews protocol
+- AI-assistant traffic as a floor (GA4 channel), UTM patterns by partner type
 
 ## 📁 Structure
 
